@@ -1499,7 +1499,10 @@ body[data-camping="running"] #pageCamping .camping-prefs-desc {color:var(--night
     position:absolute!important;left:5%!important;top:14%!important;bottom:auto!important;
     margin:0!important;padding:0!important;transform:none!important;
   }
-  body[data-page="Home"][data-scenery="forest"] #app .content {position:relative!important;inset:auto!important;height:auto!important;}
+  body[data-page="Home"][data-scenery="forest"] #app .content {
+    position:relative!important;inset:auto!important;height:auto!important;
+    background:var(--forest-floor-photo) center bottom / 100% var(--forest-floor-scale) no-repeat!important;
+  }
   body[data-page="Home"][data-scenery="forest"] #app #pageHome.active {position:static!important;transform:none!important;height:auto!important;}
 }
 </style>
@@ -1708,6 +1711,13 @@ body .hero .hero-scenery::before,body .hero .hero-scenery::after {content:none!i
    const splitPanel=forest && hero.clientHeight>0 && hero.clientWidth/hero.clientHeight<1.35;
    const desktopPath=splitPanel?mobilePath:(forest?'forest/'+dk+'.webp':IMAGES[dk]);
    const suffix=forest && model==='enyaq'?'?ref=birch2':'';
+   if(forest && hero.clientWidth && hero.clientHeight){
+     // The upper photo is 9:16, cropped at 53%. Continue its remaining ground below the hero.
+     const photoHeight=hero.clientWidth*16/9;
+     const groundFraction=.47*(1-hero.clientHeight/photoHeight);
+     document.documentElement.style.setProperty('--forest-floor-photo','url("'+mobilePath+suffix+'")');
+     document.documentElement.style.setProperty('--forest-floor-scale',(100/Math.max(.01,groundFraction))+'%');
+   }
    if(mobile.getAttribute('srcset')!==mobilePath+suffix) mobile.srcset=mobilePath+suffix;
    if(img.getAttribute('src')!==desktopPath+suffix) img.src=desktopPath+suffix;
    document.body.dataset.jfPhoto=mode;
