@@ -1505,17 +1505,9 @@ body[data-camping="running"] #pageCamping .camping-prefs-desc {color:var(--night
 </style>
 <style>
 @media(min-width:901px) {
-  body[data-vehicle="buzz"] { --forest-panel:url("forest/buzz_mobile_day.webp"); }
-  body[data-vehicle="buzz"][data-camping="running"] { --forest-panel:url("forest/buzz_mobile_night.webp"); }
-  body[data-vehicle="id45"] { --forest-panel:url("forest/id45_mobile_day.webp"); }
-  body[data-vehicle="id45"][data-camping="running"] { --forest-panel:url("forest/id45_mobile_night.webp"); }
-  body[data-vehicle="enyaq"] { --forest-panel:url("forest/enyaq_mobile_day.webp"); }
-  body[data-vehicle="enyaq"][data-camping="running"] { --forest-panel:url("forest/enyaq_mobile_night.webp"); }
-  body[data-scenery="forest"]:not([data-page="Home"]) #app .hero #jf-photo {
-    background:var(--forest-panel) center center / cover no-repeat!important;
+  body[data-scenery="forest"] #app .hero #jf-photo img {
+    object-position:left center!important;
   }
-  body[data-scenery="forest"]:not([data-page="Home"]) #app .hero #jf-photo img {display:none!important;}
-
   body[data-scenery="forest"]:not([data-page="Home"]) #app .hero .hero-title {
     top:clamp(60px,10vh,90px)!important;bottom:auto!important;margin:0!important;padding:0!important;
   }
@@ -1712,12 +1704,15 @@ body .hero .hero-scenery::before,body .hero .hero-scenery::after {content:none!i
    const dk=model+'_desktop_'+mode, mk=model+'_mobile_'+mode;
    const forest=document.body.dataset.scenery==='forest';
    const mobilePath=forest?'forest/'+mk+'.webp':IMAGES[mk];
-   const splitPanel=forest && document.body.dataset.page!=='Home';
+   const hero=img.closest('.hero');
+   const splitPanel=forest && hero.clientHeight>0 && hero.clientWidth/hero.clientHeight<1.35;
    const desktopPath=splitPanel?mobilePath:(forest?'forest/'+dk+'.webp':IMAGES[dk]);
-   if(mobile.getAttribute('srcset')!==mobilePath) mobile.srcset=mobilePath;
-   if(img.getAttribute('src')!==desktopPath) img.src=desktopPath;
+   const suffix=forest && model==='enyaq'?'?ref=birch2':'';
+   if(mobile.getAttribute('srcset')!==mobilePath+suffix) mobile.srcset=mobilePath+suffix;
+   if(img.getAttribute('src')!==desktopPath+suffix) img.src=desktopPath+suffix;
    document.body.dataset.jfPhoto=mode;
  }
+ new ResizeObserver(update).observe(img.closest('.hero'));
  new MutationObserver(update).observe(document.body,{attributes:true,attributeFilter:['data-vehicle','data-camping','data-page','data-scenery']});
  update();
  window.addEventListener('pageshow',update);
