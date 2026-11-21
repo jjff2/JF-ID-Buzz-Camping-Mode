@@ -1434,6 +1434,42 @@ body[data-camping="running"] #pageSettings.panel.active .control-label span{colo
   html body[data-page="Camping"] #app .bottomnav {position:static!important;flex:0 0 auto!important;transform:none!important;}
 }
 </style>
+<style id="camping-responsive-layout">
+body[data-page="Camping"] .content {container:camp-controls / inline-size;}
+html body[data-page="Camping"] #app #pageCamping.active {
+  display:flex!important;flex-direction:column!important;gap:12px!important;
+}
+#app #pageCamping .camping-operation,#app #pageCamping .toggle-list {
+  grid-template-columns:minmax(0,1fr)!important;
+}
+#app #pageCamping .toggle-line {
+  width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;
+  text-align:start;font:inherit;color:inherit;cursor:pointer;
+}
+#pageCamping .toggle-line > span:first-child {min-width:0;overflow-wrap:anywhere;}
+#pageCamping .toggle-line:focus-visible {outline:3px solid #268899;outline-offset:-3px;}
+#app #pageCamping .step {min-height:44px;flex-basis:44px!important;}
+@container camp-controls (min-width:42rem) {
+  html body[data-page="Camping"] #app #pageCamping.active {
+    display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr)!important;
+    grid-template-rows:auto auto auto!important;align-content:start;align-items:start!important;
+  }
+  #pageCamping > .panel-title,#pageCamping > .panel-desc {grid-column:1/-1;}
+  #pageCamping > .camping-operation {grid-column:1;grid-row:3;}
+  #pageCamping > .camping-preferences {grid-column:2;grid-row:3;}
+}
+@media (orientation:landscape) and (max-height:32rem) and (max-width:900px) {
+  html body[data-page="Home"] #app .stage {
+    display:grid!important;grid-template-columns:minmax(0,1fr) minmax(18rem,1fr);
+    height:calc(100dvh - 70px - env(safe-area-inset-bottom,0px))!important;min-height:0!important;
+  }
+  html body[data-page="Home"] #app .hero {position:relative!important;inset:auto!important;height:100%!important;min-height:0!important;}
+  html body[data-page="Home"] #app .content {height:100%!important;overflow-y:auto!important;pointer-events:auto!important;}
+  html body[data-page="Home"] #app #pageHome.panel.active {position:static!important;display:flex!important;justify-content:flex-start!important;padding:0!important;}
+  html body[data-page="Home"] #app #pageHome .home-camp-card {margin:0!important;transform:none!important;}
+  html body[data-page="Home"] #app .hero-title {margin:0!important;top:30%!important;}
+}
+</style>
 </head>
 <body data-theme="A"><div class="app" id="app"><aside aria-label="主選單" class="v14-sidebar">
 <div class="v14-brand"><div class="v14-mark">△</div><b>JFVAG</b><small>CAMPING</small></div>
@@ -1551,7 +1587,17 @@ $$('[data-t]').forEach(el=>el.textContent=t(el.dataset.t));$('vehicle').setAttri
 for(let z of ['front','rear']){$(z+'Temp').textContent=s[z+'Temp']+'°';$(z+'FanLabel').textContent=s.powerOff?'OFF':s.fanMode==='auto'?'AUTO · '+levelNames[s.autoLevel][s.lang==='zh'?0:s.lang==='ja'?2:1]:s[z+'Fan']+'/'+(car.range||'?');$(z+'FanRange').textContent=car.range?'1–'+car.range:pick('待確認','TBD','確認中');let box=$(z+'Fan');box.style.setProperty('--count',car.range||4);box.replaceChildren();if(car.range){for(let n=1;n<=car.range;n++){let btn=document.createElement('button');btn.textContent=n;btn.classList.toggle('active',!s.powerOff&&s.fanMode==='manual'&&s[z+'Fan']===n);btn.onclick=()=>{wake();s.fanMode='manual';s[z+'Fan']=n;save();render()};box.append(btn)}}else{box.textContent=pick('風量規格待確認','Fan range unverified','風量の仕様を確認中');box.style.fontSize='12px';box.style.color='#888'}}
 $$('[data-profile]').forEach(b=>b.classList.toggle('active',s.profile===b.dataset.profile));$('hours').value=s.hours;$('hoursText').textContent=s.hours+' h';
 $('runtimeHeading').textContent=isRunning()?pick('調整剩餘時間','Adjust remaining time','残り時間を調整'):pick('運作時間','Duration','運転時間');
-$('runtimeHint').textContent=isRunning()?pick('＋／－延長或縮短 1 小時；滑桿從現在重新計算','± adjusts by 1 hour; slider sets remaining time from now','＋／－で1時間ずつ調整。スライダーは現在時刻から再設定します'):pick('設定下次露營模式的運作時數','Set the duration for the next camping session','次回のキャンプ運転時間を設定します');$('language').value=s.lang;$$('[data-style-choice]').forEach(b=>{const active=b.dataset.styleChoice===s.theme;b.classList.toggle('selected',active);b.setAttribute('aria-pressed',String(active));const note=b.querySelector('small');if(note){const translations={A:['森林晨光','Forest morning','森の朝'],C:['高山湖泊','Alpine lake','高原の湖'],D:['金色山谷','Golden valley','黄金の谷'],E:['海岸晴空','Sunny coast','海岸の青空'],F:['湖畔夕照','Lakeside glow','湖畔の夕景'],G:['海岸夕照','Coastal glow','海辺の夕景']};note.textContent=translations[b.dataset.styleChoice][s.lang==='zh'?0:s.lang==='ja'?2:1]}});$('prefs').replaceChildren();prefs.forEach(([key,zh,en,descZh,descEn,ja,descJa])=>{let line=document.createElement('div');line.className='toggle-line';let label=document.createElement('div');let b=document.createElement('b');b.textContent=pick(zh,en,ja);let small=document.createElement('small');small.textContent=pick(descZh,descEn,descJa);label.append(b,small);let toggle=document.createElement('button');toggle.className='toggle'+(activePrefs()[key]?' active':'');toggle.setAttribute('aria-label',b.textContent);toggle.setAttribute('aria-pressed',String(!!activePrefs()[key]));toggle.onclick=()=>{s.prefsByVehicle[s.vehicle][key]=!activePrefs()[key];save();render()};line.append(label,toggle);$('prefs').append(line)});updateTimer()}
+$('runtimeHint').textContent=isRunning()?pick('＋／－延長或縮短 1 小時；滑桿從現在重新計算','± adjusts by 1 hour; slider sets remaining time from now','＋／－で1時間ずつ調整。スライダーは現在時刻から再設定します'):pick('設定下次露營模式的運作時數','Set the duration for the next camping session','次回のキャンプ運転時間を設定します');$('language').value=s.lang;$$('[data-style-choice]').forEach(b=>{const active=b.dataset.styleChoice===s.theme;b.classList.toggle('selected',active);b.setAttribute('aria-pressed',String(active));const note=b.querySelector('small');if(note){const translations={A:['森林晨光','Forest morning','森の朝'],C:['高山湖泊','Alpine lake','高原の湖'],D:['金色山谷','Golden valley','黄金の谷'],E:['海岸晴空','Sunny coast','海岸の青空'],F:['湖畔夕照','Lakeside glow','湖畔の夕景'],G:['海岸夕照','Coastal glow','海辺の夕景']};note.textContent=translations[b.dataset.styleChoice][s.lang==='zh'?0:s.lang==='ja'?2:1]}});$('prefs').replaceChildren();prefs.forEach(([key,zh,en,descZh,descEn,ja,descJa])=>{let line=document.createElement('button');
+line.type='button';line.className='toggle-line';
+let label=document.createElement('span'),title=document.createElement('b'),hint=document.createElement('small');
+title.textContent=pick(zh,en,ja);hint.textContent=pick(descZh,descEn,descJa);hint.id='pref-hint-'+key;
+label.append(title,hint);
+let toggle=document.createElement('span');toggle.className='toggle'+(activePrefs()[key]?' active':'');
+toggle.setAttribute('aria-hidden','true');
+line.setAttribute('aria-label',title.textContent);line.setAttribute('aria-describedby',hint.id);
+line.setAttribute('aria-pressed',String(!!activePrefs()[key]));
+line.onclick=()=>{const enabled=!activePrefs()[key];s.prefsByVehicle[s.vehicle][key]=enabled;save();toggle.classList.toggle('active',enabled);line.setAttribute('aria-pressed',String(enabled));};
+line.append(label,toggle);$('prefs').append(line)});updateTimer()}
 function nav(page){s.page=page;save();render();let panel=$('page'+page);if(panel)panel.scrollTop=0;}
 $$('.bottomnav button[data-page]').forEach(b=>b.onclick=()=>nav(b.dataset.page));
 $$('[data-v14-nav]').forEach(b=>b.addEventListener('click',()=>{
