@@ -1492,9 +1492,13 @@ body[data-camping="running"] #pageCamping .camping-prefs-desc {color:var(--night
   body[data-page="Home"][data-scenery="forest"] #app .stage {display:block!important;height:auto!important;overflow:visible!important;}
   body[data-page="Home"][data-scenery="forest"] #app .hero {
     position:relative!important;inset:auto!important;width:100%!important;
-    height:clamp(260px,55svh,650px)!important;min-height:0!important;max-height:none!important;
+    height:125vw!important;min-height:0!important;max-height:none!important;
   }
-  body[data-page="Home"][data-scenery="forest"] .hero #jf-photo img {object-position:center 54%!important;}
+  body[data-page="Home"][data-scenery="forest"] #app .hero #jf-photo img {object-fit:cover!important;object-position:center top!important;}
+  body[data-page="Home"][data-scenery="forest"] #app .hero .hero-title {
+    position:absolute!important;left:5%!important;top:14%!important;bottom:auto!important;
+    margin:0!important;padding:0!important;transform:none!important;
+  }
   body[data-page="Home"][data-scenery="forest"] #app .content {position:relative!important;inset:auto!important;height:auto!important;}
   body[data-page="Home"][data-scenery="forest"] #app #pageHome.active {position:static!important;transform:none!important;height:auto!important;}
 }
