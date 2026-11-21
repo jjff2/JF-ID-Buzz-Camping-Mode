@@ -1503,6 +1503,17 @@ body[data-camping="running"] #pageCamping .camping-prefs-desc {color:var(--night
   body[data-page="Home"][data-scenery="forest"] #app #pageHome.active {position:static!important;transform:none!important;height:auto!important;}
 }
 </style>
+<style>
+@media(min-width:901px) {
+  body[data-scenery="forest"]:not([data-page="Home"]) #app .hero #jf-photo img {object-position:center center!important;}
+  body[data-scenery="forest"]:not([data-page="Home"]) #app .hero .hero-title {
+    top:clamp(60px,10vh,90px)!important;bottom:auto!important;margin:0!important;padding:0!important;
+  }
+  body[data-scenery="forest"]:not([data-page="Home"]) #app .hero .hero-title .bigtype {
+    font-size:clamp(30px,min(3.4vw,6.3vh),64px)!important;line-height:.97!important;
+  }
+}
+</style>
 </head>
 <body data-theme="A"><div class="app" id="app"><aside aria-label="主選單" class="v14-sidebar">
 <div class="v14-brand"><div class="v14-mark">△</div><b>JFVAG</b><small>CAMPING</small></div>
@@ -1691,7 +1702,8 @@ body .hero .hero-scenery::before,body .hero .hero-scenery::after {content:none!i
    const dk=model+'_desktop_'+mode, mk=model+'_mobile_'+mode;
    const forest=document.body.dataset.scenery==='forest';
    const mobilePath=forest?'forest/'+mk+'.webp':IMAGES[mk];
-   const desktopPath=forest?'forest/'+dk+'.webp':IMAGES[dk];
+   const splitPanel=forest && document.body.dataset.page!=='Home';
+   const desktopPath=splitPanel?mobilePath:(forest?'forest/'+dk+'.webp':IMAGES[dk]);
    if(mobile.getAttribute('srcset')!==mobilePath) mobile.srcset=mobilePath;
    if(img.getAttribute('src')!==desktopPath) img.src=desktopPath;
    document.body.dataset.jfPhoto=mode;
