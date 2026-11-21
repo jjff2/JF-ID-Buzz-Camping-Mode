@@ -1424,6 +1424,16 @@ body[data-camping="running"] #pageSettings.panel.active .control-label span{colo
   }
 }
 </style>
+<style id="camping-mobile-controls">
+@media (max-width:900px) {
+  html body[data-page="Camping"] #app {height:100dvh!important;min-height:0!important;padding-bottom:0!important;overflow:hidden!important;}
+  html body[data-page="Camping"] #app .stage {height:100%!important;min-height:0!important;overflow:hidden!important;}
+  html body[data-page="Camping"] #app .content {display:flex!important;flex-direction:column!important;height:100%!important;min-height:0!important;max-height:100%!important;padding:0!important;gap:0!important;overflow:hidden!important;}
+  html body[data-page="Camping"] #pageCamping.active {flex:1 1 0!important;min-height:0!important;overflow-y:auto!important;padding:14px 14px 24px!important;scroll-padding-block:14px 24px;}
+  html body[data-page="Camping"] #pageCamping.active > * {flex-shrink:0;}
+  html body[data-page="Camping"] #app .bottomnav {position:static!important;flex:0 0 auto!important;transform:none!important;}
+}
+</style>
 </head>
 <body data-theme="A"><div class="app" id="app"><aside aria-label="主選單" class="v14-sidebar">
 <div class="v14-brand"><div class="v14-mark">△</div><b>JFVAG</b><small>CAMPING</small></div>
