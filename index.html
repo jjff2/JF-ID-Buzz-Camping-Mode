@@ -1505,7 +1505,17 @@ body[data-camping="running"] #pageCamping .camping-prefs-desc {color:var(--night
 </style>
 <style>
 @media(min-width:901px) {
-  body[data-scenery="forest"]:not([data-page="Home"]) #app .hero #jf-photo img {object-position:center center!important;}
+  body[data-vehicle="buzz"] { --forest-panel:url("forest/buzz_mobile_day.webp"); }
+  body[data-vehicle="buzz"][data-camping="running"] { --forest-panel:url("forest/buzz_mobile_night.webp"); }
+  body[data-vehicle="id45"] { --forest-panel:url("forest/id45_mobile_day.webp"); }
+  body[data-vehicle="id45"][data-camping="running"] { --forest-panel:url("forest/id45_mobile_night.webp"); }
+  body[data-vehicle="enyaq"] { --forest-panel:url("forest/enyaq_mobile_day.webp"); }
+  body[data-vehicle="enyaq"][data-camping="running"] { --forest-panel:url("forest/enyaq_mobile_night.webp"); }
+  body[data-scenery="forest"]:not([data-page="Home"]) #app .hero #jf-photo {
+    background:var(--forest-panel) center center / cover no-repeat!important;
+  }
+  body[data-scenery="forest"]:not([data-page="Home"]) #app .hero #jf-photo img {display:none!important;}
+
   body[data-scenery="forest"]:not([data-page="Home"]) #app .hero .hero-title {
     top:clamp(60px,10vh,90px)!important;bottom:auto!important;margin:0!important;padding:0!important;
   }
