@@ -1415,11 +1415,15 @@ body[data-camping="running"] #pageSettings.panel.active .control-label span{colo
 }
 </style>
 
-<style id="jf-v25-home-card-raise">
-/* Mobile home only: raise the entire camping control card 40px,
-   keeping its button, text, and hit targets together. */
-@media (max-width:900px){
-  html body[data-page="Home"] #pageHome .home-camp-card{
+<style id="mobile-home-card-position">
+@media (max-width:900px) and (orientation:portrait) {
+  html body[data-page="Home"] #pageHome .home-camp-card {
+    margin-top:0!important;
+    transform:none!important;
+  }
+}
+@media (max-width:900px) and (orientation:landscape) {
+  html body[data-page="Home"] #pageHome .home-camp-card {
     transform:translateY(-40px)!important;
   }
 }
