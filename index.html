@@ -1492,9 +1492,9 @@ body[data-camping="running"] #pageCamping .camping-prefs-desc {color:var(--night
   body[data-page="Home"][data-scenery="forest"] #app .stage {display:block!important;height:auto!important;overflow:visible!important;}
   body[data-page="Home"][data-scenery="forest"] #app .hero {
     position:relative!important;inset:auto!important;width:100%!important;
-    height:125vw!important;min-height:0!important;max-height:none!important;
+    height:min(125vw, max(9rem, calc(100svh - var(--camp-card-height, 12rem) - 70px - env(safe-area-inset-bottom, 0px) - 20px)))!important;min-height:0!important;max-height:none!important;
   }
-  body[data-page="Home"][data-scenery="forest"] #app .hero #jf-photo img {object-fit:cover!important;object-position:center top!important;}
+  body[data-page="Home"][data-scenery="forest"] #app .hero #jf-photo img {object-fit:cover!important;object-position:center 53%!important;}
   body[data-page="Home"][data-scenery="forest"] #app .hero .hero-title {
     position:absolute!important;left:5%!important;top:14%!important;bottom:auto!important;
     margin:0!important;padding:0!important;transform:none!important;
@@ -1712,6 +1712,10 @@ body .hero .hero-scenery::before,body .hero .hero-scenery::after {content:none!i
    if(img.getAttribute('src')!==desktopPath+suffix) img.src=desktopPath+suffix;
    document.body.dataset.jfPhoto=mode;
  }
+ const card=document.getElementById('homeCampCard');
+ new ResizeObserver(()=>{
+   if(card.offsetHeight) document.documentElement.style.setProperty('--camp-card-height',card.offsetHeight+'px');
+ }).observe(card);
  new ResizeObserver(update).observe(img.closest('.hero'));
  new MutationObserver(update).observe(document.body,{attributes:true,attributeFilter:['data-vehicle','data-camping','data-page','data-scenery']});
  update();
